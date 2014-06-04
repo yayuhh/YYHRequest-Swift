@@ -1,7 +1,14 @@
-YYHRequest-Swift
+YYHRequest
 ==========
 
-A port of [YYHRequest](https://github.com/yayuhh/YYHRequest) in Swift
+`YYHRequest` is a simple and lightweight class for loading asynchronous HTTP requests in Swift. Built on `NSURLConnection` and `NSOperationQueue`. `YYHRequest` is not intended to be a full-featured networking framework but instead a simple wrapper to avoid the boilerplate of using `NSURLConnection` and `NSURLRequest` for simple networking tasks.
+
+- Lightweight design - just a single wrapper class
+- Avoid the boilerplate of `NSURLConnection` and `NSURLRequest` for simple networking tasks
+- Simple API for setting request headers, query parameters, and form data
+- Block-based `success` and `failure` callbacks for processing response data
+
+Original Objective-C version [available here](https://github.com/yayuhh/YYHRequest). 
 
 ## Getting Started
 
