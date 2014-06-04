@@ -23,8 +23,11 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var failure: (NSError) -> Void?
     
     var contentType: String? {
-    willSet {
+    set {
         headers["Content-Type"] = newValue
+    }
+    get {
+        return headers["Content-Type"]
     }
     }
     
