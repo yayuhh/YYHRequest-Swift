@@ -8,7 +8,7 @@
 
 import Foundation
 
-var operationQueue = NSOperationQueue()
+let operationQueue = NSOperationQueue()
 
 class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var url: NSURL
