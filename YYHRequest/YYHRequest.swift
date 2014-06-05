@@ -12,12 +12,12 @@ let operationQueue = NSOperationQueue()
 
 class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var url: NSURL
-    var method: String = "GET"
-    var body: NSData = NSData()
+    var method = "GET"
+    var body = NSData()
     var headers: Dictionary<String, String> = Dictionary()
     var parameters: Dictionary<String, String> = Dictionary()
     var response: NSURLResponse?
-    var responseData: NSMutableData = NSMutableData()
+    var responseData = NSMutableData()
     var connection: NSURLConnection?
     var success: (NSMutableData) -> Void?
     var failure: (NSError) -> Void?
