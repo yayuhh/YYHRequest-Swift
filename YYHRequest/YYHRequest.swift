@@ -68,16 +68,16 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     // Request Creation
     
     func request() -> NSMutableURLRequest {
-        var request: NSMutableURLRequest = NSMutableURLRequest(URL: self.url)
-        request.HTTPMethod = self.method
-        request.HTTPBody = self.body
+        var request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = method
+        request.HTTPBody = body
         
-        for (field, value) in self.headers {
+        for (field, value) in headers {
             request.setValue(value, forHTTPHeaderField: field)
         }
         
-        if (self.body.length > 0) {
-            request.setValue(String(self.body.length), forHTTPHeaderField: "Content-Length")
+        if (body.length > 0) {
+            request.setValue(String(body.length), forHTTPHeaderField: "Content-Length")
         }
         
         return request
@@ -132,7 +132,6 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     func connectionDidFinishLoading(connection: NSURLConnection!) {
-//        let data: NSData = responseData
         completionHandler(response, responseData, nil)
     }
 }
