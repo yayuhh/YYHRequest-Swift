@@ -17,7 +17,7 @@ Create and load a request
     var url: NSURL = NSURL(string: "http://www.google.com/")
     var request: YYHRequest = YYHRequest(url: url)
 
-    request.loadWithCompletion() {
+    request.loadWithCompletion {
         (response: NSURLResponse!, data: NSData!, error: NSError!) in
         // request complete!
     }
@@ -43,7 +43,7 @@ Create request and load manually.
     var url: NSURL = NSURL(string: "http://www.google.com/")
     var request: YYHRequest = YYHRequest(url: url)
 
-    request.loadWithCompletion() {
+    request.loadWithCompletion {
         (response: NSURLResponse!, data: NSData!, error: NSError!) in
         // request complete!
     }
