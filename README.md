@@ -8,7 +8,7 @@ YYHRequest
 - Simple API for setting request headers, query parameters, and form data
 - Block-based `success` and `failure` callbacks for processing response data
 
-Original Objective-C version [available here](https://github.com/yayuhh/YYHRequest). 
+Original Objective-C version [available here](https://github.com/yayuhh/YYHRequest).
 
 ## Getting Started
 
@@ -17,11 +17,10 @@ Create and load a request
     var url: NSURL = NSURL(string: "http://www.google.com/")
     var request: YYHRequest = YYHRequest(url: url)
 
-    request.loadRequest({(data: NSMutableData) -> Void in
-        println("success")
-    }, failure: {(error: NSError) -> Void in
-        println("failure")
-    })
+    request.loadWithCompletion() {
+        (response: NSURLResponse!, data: NSData!, error: NSError!) in
+        // request complete!
+    }
 
 Create request and load manually.
 
@@ -30,12 +29,9 @@ Create request and load manually.
     request.method = "POST"
     request.parameters["foo"] = "bar"
 
-    request.success = {(data: NSMutableData) -> Void in
-        println("success")
-    }
-
-    request.failure = {(error: NSError) -> Void in
-        println("failure")
+    request.completionHandler = {
+        (response: NSURLResponse!, data: NSData!, error: NSError!) in
+        // request complete!
     }
 
     request.loadRequest()
@@ -47,11 +43,10 @@ Create request and load manually.
     var url: NSURL = NSURL(string: "http://www.google.com/")
     var request: YYHRequest = YYHRequest(url: url)
 
-    request.loadRequest({(data: NSMutableData) -> Void in
-        println("success")
-    }, failure: {(error: NSError) -> Void in
-        println("failure")
-    })
+    request.loadWithCompletion() {
+        (response: NSURLResponse!, data: NSData!, error: NSError!) in
+        // request complete!
+    }
 
 HTTP
 

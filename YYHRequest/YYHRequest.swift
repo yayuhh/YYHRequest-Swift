@@ -16,12 +16,11 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var body = NSData()
     var headers: Dictionary<String, String> = Dictionary()
     var parameters: Dictionary<String, String> = Dictionary()
+    var connection: NSURLConnection?
     var response: NSURLResponse?
     var responseData = NSMutableData()
-    var connection: NSURLConnection?
-    var success: (NSMutableData) -> Void?
-    var failure: (NSError) -> Void?
-    
+    var completionHandler: (NSURLResponse!, NSData!, NSError!) -> Void
+
     var contentType: String? {
     set {
         headers["Content-Type"] = newValue
@@ -42,21 +41,17 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     init(url: NSURL) {
         self.url = url
+        completionHandler = {
+            (response: NSURLResponse!, data: NSData!, error: NSError!) in
+        }
         operationQueue.maxConcurrentOperationCount = 4
-        operationQueue.name = "com.yayuhh.SwiftRequest"
-        success = {(data: NSMutableData) -> Void in
-            println("success")
-        }
-        failure = {(error: NSError) -> Void in
-            println("failure")
-        }
+        operationQueue.name = "com.yayuhh.YYHRequest"
     }
     
     // Request Loading
     
-    func loadRequest(success: (NSMutableData) -> Void, failure: (NSError) -> Void) {
-        self.success = success
-        self.failure = failure
+    func loadWithCompletion(completionHandler: (NSURLResponse!, NSData!, NSError!) -> Void) {
+        self.completionHandler = completionHandler
         loadRequest()
     }
     
@@ -64,7 +59,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         if (parameters.count > 0) {
             serializeRequestParameters()
         }
-        
+
         connection = NSURLConnection(request: request(), delegate: self)
         connection!.setDelegateQueue(operationQueue)
         connection!.start()
@@ -125,7 +120,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     // NSURLConnectionDataDelegate
     
     func connection(connection: NSURLConnection!, didFailWithError error: NSError!) {
-        failure(error)
+        completionHandler(nil, nil, error)
     }
     
     func connection(connection: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
@@ -137,6 +132,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     func connectionDidFinishLoading(connection: NSURLConnection!) {
-        success(responseData)
+//        let data: NSData = responseData
+        completionHandler(response, responseData, nil)
     }
 }
