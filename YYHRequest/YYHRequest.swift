@@ -41,8 +41,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     init(url: NSURL) {
         self.url = url
-        completionHandler = {
-            (response: NSURLResponse!, data: NSData!, error: NSError!) in
+        completionHandler = {response, data, error in
         }
         operationQueue.maxConcurrentOperationCount = 4
         operationQueue.name = "com.yayuhh.YYHRequest"

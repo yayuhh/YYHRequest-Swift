@@ -17,8 +17,7 @@ Create and load a request
     var url: NSURL = NSURL(string: "http://www.google.com/")
     var request: YYHRequest = YYHRequest(url: url)
 
-    request.loadWithCompletion {
-        (response: NSURLResponse!, data: NSData!, error: NSError!) in
+    request.loadWithCompletion { response, data, error in
         // request complete!
     }
 
@@ -29,8 +28,7 @@ Create request and load manually.
     request.method = "POST"
     request.parameters["foo"] = "bar"
 
-    request.completionHandler = {
-        (response: NSURLResponse!, data: NSData!, error: NSError!) in
+    request.loadWithCompletion { response, data, error in
         // request complete!
     }
 
@@ -43,8 +41,7 @@ Create request and load manually.
     var url: NSURL = NSURL(string: "http://www.google.com/")
     var request: YYHRequest = YYHRequest(url: url)
 
-    request.loadWithCompletion {
-        (response: NSURLResponse!, data: NSData!, error: NSError!) in
+    request.loadWithCompletion { response, data, error in
         // request complete!
     }
 
