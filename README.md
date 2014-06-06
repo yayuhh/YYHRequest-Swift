@@ -6,7 +6,6 @@ YYHRequest
 - Lightweight design - just a single wrapper class
 - Avoid the boilerplate of `NSURLConnection` and `NSURLRequest` for simple networking tasks
 - Simple API for setting request headers, query parameters, and form data
-- Block-based `success` and `failure` callbacks for processing response data
 
 Original Objective-C version [available here](https://github.com/yayuhh/YYHRequest).
 
