@@ -44,6 +44,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     init(url: NSURL) {
         self.url = url
         completionHandler = {response, data, error in}
+        super.init()
     }
     
     // Request Loading
