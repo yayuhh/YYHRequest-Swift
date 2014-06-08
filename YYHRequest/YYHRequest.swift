@@ -11,6 +11,8 @@ import Foundation
 let operationQueue = NSOperationQueue()
 
 class YYHRequest: NSObject, NSURLConnectionDataDelegate {
+    typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
+    
     var url: NSURL
     var method = "GET"
     var body = NSData()
@@ -19,7 +21,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var connection: NSURLConnection?
     var response: NSURLResponse?
     var responseData = NSMutableData()
-    var completionHandler: (NSURLResponse!, NSData!, NSError!) -> Void
+    var completionHandler: YYHRequestCompletionHandler
 
     var contentType: String? {
     set {
@@ -41,15 +43,14 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     init(url: NSURL) {
         self.url = url
-        completionHandler = {response, data, error in
-        }
+        completionHandler = {response, data, error in}
         operationQueue.maxConcurrentOperationCount = 4
         operationQueue.name = "com.yayuhh.YYHRequest"
     }
     
     // Request Loading
     
-    func loadWithCompletion(completionHandler: (NSURLResponse!, NSData!, NSError!) -> Void) {
+    func loadWithCompletion(completionHandler: YYHRequestCompletionHandler) {
         self.completionHandler = completionHandler
         loadRequest()
     }
@@ -67,7 +68,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     // Request Creation
     
     func request() -> NSMutableURLRequest {
-        var request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+        let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
         request.HTTPMethod = method
         request.HTTPBody = body
         
@@ -107,8 +108,8 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         var firstPass = true
         
         for (key, value) in parameters {
-            var encodedKey: NSString = key.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-            var encodedValue: NSString = value.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            let encodedKey: NSString = key.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            let encodedValue: NSString = value.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
             result += firstPass ? "\(encodedKey)=\(encodedValue)" : "&\(encodedKey)=\(encodedValue)"
             firstPass = false;
         }
