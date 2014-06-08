@@ -20,7 +20,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var parameters: Dictionary<String, String> = Dictionary()
     var connection: NSURLConnection?
     var response: NSURLResponse?
-    var responseData = NSMutableData()
+    @lazy var responseData = NSMutableData()
     var completionHandler: YYHRequestCompletionHandler
 
     var contentType: String? {
@@ -128,11 +128,11 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         completionHandler(nil, nil, error)
     }
     
-    func connection(_: NSURLConnection!, response: NSURLResponse!) {
+    func connection(_: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
         self.response = response
     }
     
-    func connection(_: NSURLConnection!, data: NSData!) {
+    func connection(_: NSURLConnection!, didReceiveData data: NSData!) {
         responseData.appendData(data)
     }
     
