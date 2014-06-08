@@ -123,19 +123,19 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     // NSURLConnectionDataDelegate
     
-    func connection(connection: NSURLConnection!, didFailWithError error: NSError!) {
+    func connection(_: NSURLConnection!, error: NSError!) {
         completionHandler(nil, nil, error)
     }
     
-    func connection(connection: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
+    func connection(_: NSURLConnection!, response: NSURLResponse!) {
         self.response = response
     }
     
-    func connection(connection: NSURLConnection!, didReceiveData data: NSData!) {
+    func connection(_: NSURLConnection!, data: NSData!) {
         responseData.appendData(data)
     }
     
-    func connectionDidFinishLoading(connection: NSURLConnection!) {
+    func connectionDidFinishLoading(_: NSURLConnection!) {
         completionHandler(response, responseData, nil)
     }
 }
