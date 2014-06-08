@@ -8,7 +8,7 @@
 
 import Foundation
 
-let operationQueue = NSOperationQueue()
+var _requestOperationQueue: NSOperationQueue?
 
 class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
@@ -44,8 +44,6 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     init(url: NSURL) {
         self.url = url
         completionHandler = {response, data, error in}
-        operationQueue.maxConcurrentOperationCount = 4
-        operationQueue.name = "com.yayuhh.YYHRequest"
     }
     
     // Request Loading
@@ -59,9 +57,15 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         if (parameters.count > 0) {
             serializeRequestParameters()
         }
+        
+        if _requestOperationQueue == nil {
+            _requestOperationQueue = NSOperationQueue()
+            _requestOperationQueue!.maxConcurrentOperationCount = 4
+            _requestOperationQueue!.name = "com.yayuhh.YYHRequest"
+        }
 
         connection = NSURLConnection(request: request(), delegate: self)
-        connection!.setDelegateQueue(operationQueue)
+        connection!.setDelegateQueue(_requestOperationQueue)
         connection!.start()
     }
     
