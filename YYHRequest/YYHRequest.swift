@@ -65,14 +65,14 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
             _requestOperationQueue!.name = "com.yayuhh.YYHRequest"
         }
 
-        connection = NSURLConnection(request: request(), delegate: self)
+        connection = NSURLConnection(request: urlRequest(), delegate: self)
         connection!.setDelegateQueue(_requestOperationQueue)
         connection!.start()
     }
     
     // Request Creation
     
-    func request() -> NSMutableURLRequest {
+    func urlRequest() -> NSMutableURLRequest {
         let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
         request.HTTPMethod = method
         request.HTTPBody = body

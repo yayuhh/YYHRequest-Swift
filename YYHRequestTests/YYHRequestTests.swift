@@ -7,28 +7,59 @@
 //
 
 import XCTest
+import YYHRequest
 
 class YYHRequestTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    class func placeholderRequest() -> YYHRequest {
+        let url: NSURL = NSURL(string: "http://www.google.com/")
+        let request: YYHRequest = YYHRequest(url: url)
+        request.parameters["name"] = "Mordecai"
+        request.parameters["occupation"] = "Groundskeeper"
+        request.parameters["supervisor"] = "Benson"
+        request.contentType = "test/plain"
+        request.userAgent = "my user agent"
+        return request
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testDefaultProperties() {
+        let request: YYHRequest = YYHRequestTests.placeholderRequest()
+        XCTAssertEqual(request.method, "GET", "request.method should be equal to GET")
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+    func testSetHeaderProperties() {
+        let request: YYHRequest = YYHRequestTests.placeholderRequest()
+        XCTAssert(request.contentType == request.headers["Content-Type"])
+        XCTAssert(request.userAgent == request.headers["User-Agent"])
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
+    func testUrlRequest() {
+        let url: NSURL = NSURL(string: "http://www.google.com/")
+        let request: YYHRequest = YYHRequest(url: url)
+        
+        let urlRequest = request.urlRequest()
+        XCTAssertEqual(urlRequest.URL, request.url)
+        XCTAssertEqual(urlRequest.HTTPBody, request.body)
+        XCTAssertEqual(urlRequest.HTTPMethod, request.method)
+        
+        for (field, value) in request.headers {
+            XCTAssertEqual(value, urlRequest.valueForHTTPHeaderField(field), "header value should be equal")
+        }
+    }
+    
+    func testQueryString() {
+        let request: YYHRequest = YYHRequestTests.placeholderRequest()
+        var queryString = request.queryString()
+        XCTAssert(queryString.hasPrefix("?"), "should start with ? character")
+        
+        queryString = queryString.stringByReplacingOccurrencesOfString("?", withString: "")
+        let components = queryString.componentsSeparatedByString("&")
+        
+        for part in components {
+            let pair = part.componentsSeparatedByString("=")
+            let key = pair[0]
+            let value = pair[1]
+            XCTAssert(request.parameters[key] == value)
         }
     }
     
