@@ -13,8 +13,7 @@ Original Objective-C version [available here](https://github.com/yayuhh/YYHReque
 
 Create and load a request
 
-    let url: NSURL = NSURL(string: "http://www.google.com/")
-    let request: YYHRequest = YYHRequest(url: url)
+    let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
 
     request.loadWithCompletion {response, data, error in
         if let actualError = error {
@@ -26,8 +25,7 @@ Create and load a request
 
 Create request and load manually.
 
-    let url: NSURL = NSURL(string: "http://www.google.com/")
-    let request: YYHRequest = YYHRequest(url: url)
+    let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
     request.method = "POST"
     request.parameters["foo"] = "bar"
 
@@ -41,8 +39,7 @@ Create request and load manually.
 
 ### Load a Request
 
-    let url: NSURL = NSURL(string: "http://www.google.com/")
-    let request: YYHRequest = YYHRequest(url: url)
+    let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
 
     request.loadWithCompletion { response, data, error in
         // request complete!
@@ -71,7 +68,7 @@ HTTP
 
 ### Sending Query Parameters
 
-    let request: YYHRequest = YYHRequest(url: url)
+    let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
     request.parameters["foo"] = "bar"
 
 HTTP
@@ -80,7 +77,7 @@ HTTP
 
 ### Posting Data
 
-    let request: YYHRequest = YYHRequest(url: url)
+    let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
     request.method = "POST"
     request.parameters["foo"] = "bar"
 
