@@ -55,10 +55,10 @@ HTTP
     request.method = "PUT";
 
     // set HTTP headers using headers dictionary
-    request.headers["User-Agent"] = "value";
+    request.headers["User-Agent"] = "value"
 
     // set header values via properties
-    request.userAgent = "value";
+    request.userAgent = "value"
 
 HTTP
 
