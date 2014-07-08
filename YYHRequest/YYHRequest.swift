@@ -15,7 +15,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     var url: NSURL
     var method = "GET"
-    var body = NSData()
+    var body: NSData?
     var headers: Dictionary<String, String> = Dictionary()
     var parameters: Dictionary<String, String> = Dictionary()
     var connection: NSURLConnection?
@@ -81,8 +81,10 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
             request.setValue(value, forHTTPHeaderField: field)
         }
         
-        if (body.length > 0) {
-            request.setValue(String(body.length), forHTTPHeaderField: "Content-Length")
+        if let validBody = body {
+            if (validBody.length > 0) {
+                request.setValue(String(validBody.length), forHTTPHeaderField: "Content-Length")
+            }
         }
         
         return request
@@ -100,7 +102,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         }
     }
     
-    func serializedRequestBody() -> NSData {
+    func serializedRequestBody() -> NSData? {
         return queryString().dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
     }
     
