@@ -20,7 +20,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     var parameters: Dictionary<String, String> = Dictionary()
     var connection: NSURLConnection?
     var response: NSURLResponse?
-    @lazy var responseData = NSMutableData()
+    lazy var responseData = NSMutableData()
     var completionHandler: YYHRequestCompletionHandler
 
     var contentType: String? {
