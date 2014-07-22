@@ -8,22 +8,22 @@
 
 import Foundation
 
-var _requestOperationQueue: NSOperationQueue?
+internal var _requestOperationQueue: NSOperationQueue?
 
-class YYHRequest: NSObject, NSURLConnectionDataDelegate {
-    typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
+public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
+    public typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
     
-    var url: NSURL
-    var method = "GET"
-    var body: NSData?
-    var headers: Dictionary<String, String> = Dictionary()
-    var parameters: Dictionary<String, String> = Dictionary()
-    var connection: NSURLConnection?
-    var response: NSURLResponse?
-    lazy var responseData = NSMutableData()
-    var completionHandler: YYHRequestCompletionHandler
-
-    var contentType: String? {
+    public var url: NSURL
+    public var method = "GET"
+    public var body: NSData?
+    public var headers: Dictionary<String, String> = Dictionary()
+    public var parameters: Dictionary<String, String> = Dictionary()
+    public var response: NSURLResponse?
+    public lazy var responseData = NSMutableData()
+    public var completionHandler: YYHRequestCompletionHandler
+    internal var connection: NSURLConnection?
+    
+    public var contentType: String? {
     set {
         headers["Content-Type"] = newValue
     }
@@ -32,7 +32,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     }
     
-    var userAgent: String? {
+    public var userAgent: String? {
     set {
         headers["User-Agent"] = newValue
     }
@@ -41,7 +41,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     }
     
-    init(url: NSURL) {
+    public init(url: NSURL) {
         self.url = url
         completionHandler = {response, data, error in}
         super.init()
@@ -49,12 +49,12 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     // Request Loading
     
-    func loadWithCompletion(completionHandler: YYHRequestCompletionHandler) {
+    public func loadWithCompletion(completionHandler: YYHRequestCompletionHandler) {
         self.completionHandler = completionHandler
         loadRequest()
     }
     
-    func loadRequest() {
+    public func loadRequest() {
         if (parameters.count > 0) {
             serializeRequestParameters()
         }
@@ -64,7 +64,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
             _requestOperationQueue!.maxConcurrentOperationCount = 4
             _requestOperationQueue!.name = "com.yayuhh.YYHRequest"
         }
-
+        
         connection = NSURLConnection(request: urlRequest(), delegate: self)
         connection!.setDelegateQueue(_requestOperationQueue)
         connection!.start()
@@ -72,7 +72,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     // Request Creation
     
-    func urlRequest() -> NSMutableURLRequest {
+    public func urlRequest() -> NSMutableURLRequest {
         let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
         request.HTTPMethod = method
         request.HTTPBody = body
@@ -110,7 +110,7 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         return NSURL(string: url.absoluteString + queryString())
     }
     
-    func queryString() -> String {
+    public func queryString() -> String {
         var result = "?"
         var firstPass = true
         
@@ -126,19 +126,19 @@ class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
     // NSURLConnectionDataDelegate
     
-    func connection(_: NSURLConnection!, error: NSError!) {
+    public func connection(_: NSURLConnection!, error: NSError!) {
         completionHandler(nil, nil, error)
     }
     
-    func connection(_: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
+    public func connection(_: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
         self.response = response
     }
     
-    func connection(_: NSURLConnection!, didReceiveData data: NSData!) {
+    public func connection(_: NSURLConnection!, didReceiveData data: NSData!) {
         responseData.appendData(data)
     }
     
-    func connectionDidFinishLoading(_: NSURLConnection!) {
+    public func connectionDidFinishLoading(_: NSURLConnection!) {
         completionHandler(response, responseData, nil)
     }
 }
