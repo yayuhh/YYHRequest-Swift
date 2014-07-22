@@ -39,7 +39,6 @@ class YYHRequestTests: XCTestCase {
         
         let urlRequest = request.urlRequest()
         XCTAssertEqual(urlRequest.URL, request.url)
-        XCTAssertTrue(urlRequest.HTTPBody.isEqualToData(request.body))	        
         XCTAssertEqual(urlRequest.HTTPMethod, request.method)
         
         for (field, value) in request.headers {

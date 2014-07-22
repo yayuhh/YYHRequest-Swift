@@ -8,38 +8,46 @@
 
 import Foundation
 
+public typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
 internal var _requestOperationQueue: NSOperationQueue?
 
 public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
-    public typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
+    
+    //MARK: Request Properties
     
     public var url: NSURL
     public var method = "GET"
     public var body: NSData?
     public var headers: Dictionary<String, String> = Dictionary()
     public var parameters: Dictionary<String, String> = Dictionary()
-    public var response: NSURLResponse?
-    public lazy var responseData = NSMutableData()
     public var completionHandler: YYHRequestCompletionHandler
-    internal var connection: NSURLConnection?
     
     public var contentType: String? {
-    set {
-        headers["Content-Type"] = newValue
-    }
-    get {
-        return headers["Content-Type"]
-    }
+        set {
+            headers["Content-Type"] = newValue
+        }
+        get {
+            return headers["Content-Type"]
+        }
     }
     
     public var userAgent: String? {
-    set {
-        headers["User-Agent"] = newValue
+        set {
+            headers["User-Agent"] = newValue
+        }
+        get {
+            return headers["User-Agent"]
+        }
     }
-    get {
-        return headers["User-Agent"]
-    }
-    }
+
+    //MARK: Response Properties
+
+    public var response: NSURLResponse?
+    public lazy var responseData = NSMutableData()
+    
+    //MARK: NSURLConnection
+    
+    internal var connection: NSURLConnection?
     
     public init(url: NSURL) {
         self.url = url
@@ -47,7 +55,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         super.init()
     }
     
-    // Request Loading
+    //MARK: Request Loading
     
     public func loadWithCompletion(completionHandler: YYHRequestCompletionHandler) {
         self.completionHandler = completionHandler
@@ -70,7 +78,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         connection!.start()
     }
     
-    // Request Creation
+    //MARK: Request Creation
     
     public func urlRequest() -> NSMutableURLRequest {
         let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
@@ -90,7 +98,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         return request
     }
     
-    // Request Parameters
+    //MARK: Request Parameters
     
     func serializeRequestParameters() {
         contentType = "application/x-www-form-urlencoded"
@@ -124,7 +132,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         return result
     }
     
-    // NSURLConnectionDataDelegate
+    //MARK: NSURLConnectionDataDelegate
     
     public func connection(_: NSURLConnection!, error: NSError!) {
         completionHandler(nil, nil, error)
