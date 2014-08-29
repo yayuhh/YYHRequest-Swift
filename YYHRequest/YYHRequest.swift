@@ -119,7 +119,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     public func queryString() -> String {
-        var result = "?"
+        var result = method == "GET" ? "?" : ""
         var firstPass = true
         
         for (key, value) in parameters {
