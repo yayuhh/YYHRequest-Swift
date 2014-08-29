@@ -115,7 +115,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     func queryParametersURL() -> NSURL {
-        return NSURL(string: url.absoluteString + queryString())
+        return NSURL(string: url.absoluteString! + queryString())
     }
     
     public func queryString() -> String {
@@ -123,8 +123,8 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         var firstPass = true
         
         for (key, value) in parameters {
-            let encodedKey: NSString = key.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-            let encodedValue: NSString = value.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            let encodedKey: NSString = key.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            let encodedValue: NSString = value.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
             result += firstPass ? "\(encodedKey)=\(encodedValue)" : "&\(encodedKey)=\(encodedValue)"
             firstPass = false;
         }
