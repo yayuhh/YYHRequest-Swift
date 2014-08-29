@@ -1,3 +1,4 @@
+
 //
 //  YYHRequest
 //  YYHRequest
@@ -9,7 +10,6 @@
 import Foundation
 
 public typealias YYHRequestCompletionHandler = (NSURLResponse?, NSData?, NSError?) -> Void
-internal var _requestOperationQueue: NSOperationQueue?
 
 public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     
@@ -42,7 +42,14 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
 
     //MARK: Response Properties
 
-    public var response: NSURLResponse?
+    public var response: NSURLResponse? {
+		willSet {
+			
+		}
+		didSet {
+			
+		}
+	}
     public lazy var responseData = NSMutableData()
     
     //MARK: NSURLConnection
@@ -63,20 +70,29 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     public func loadRequest() {
-        if (parameters.count > 0) {
+		if (parameters.count > 0) {
             serializeRequestParameters()
         }
-        
-        if _requestOperationQueue == nil {
-            _requestOperationQueue = NSOperationQueue()
-            _requestOperationQueue!.maxConcurrentOperationCount = 4
-            _requestOperationQueue!.name = "com.yayuhh.YYHRequest"
-        }
-        
-        connection = NSURLConnection(request: urlRequest(), delegate: self)
-        connection!.setDelegateQueue(_requestOperationQueue)
-        connection!.start()
+
+		self.connection = NSURLConnection(request: self.urlRequest(), delegate: self)
+
+		var async_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
+		dispatch_async(async_queue, {
+			self.connection!.start()
+		})
     }
+	
+	public func loadImmediately() -> NSData? {
+		if (parameters.count > 0) {
+			serializeRequestParameters()
+		}
+
+		var data: NSData?
+		dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+			data = NSURLConnection.sendSynchronousRequest(self.urlRequest(), returningResponse: &self.response, error: nil)
+		})
+		return data
+	}
     
     //MARK: Request Creation
     
