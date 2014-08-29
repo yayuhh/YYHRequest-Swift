@@ -42,7 +42,14 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
 
     //MARK: Response Properties
 
-    public var response: NSURLResponse?
+    public var response: NSURLResponse? {
+		willSet {
+			
+		}
+		didSet {
+			
+		}
+	}
     public lazy var responseData = NSMutableData()
     
     //MARK: NSURLConnection

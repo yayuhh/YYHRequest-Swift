@@ -37,7 +37,13 @@ Create request and load manually.
 
 ## Usage
 
-### Load a Request
+### Load a Request Synchronously
+
+	let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
+
+	let responseData = request.loadImmediately()
+
+### Load a Request Asynchronously
 
     let request = YYHRequest(url: NSURL(string: "http://www.google.com/"))
 
