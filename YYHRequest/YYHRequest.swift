@@ -104,7 +104,9 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         contentType = "application/x-www-form-urlencoded"
         
         if (method == "GET") {
-            url = queryParametersURL()
+            if let queryURL = queryParametersURL() {
+                url = queryURL
+            }
         } else {
             body = serializedRequestBody()
         }
@@ -114,7 +116,7 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
         return queryString().dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
     }
     
-    func queryParametersURL() -> NSURL {
+    func queryParametersURL() -> NSURL? {
         return NSURL(string: url.absoluteString! + queryString())
     }
     
@@ -133,20 +135,20 @@ public class YYHRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     //MARK: NSURLConnectionDataDelegate
-    
-    public func connection(_: NSURLConnection!, error: NSError!) {
+
+    public func connection(connection: NSURLConnection, didFailWithError error: NSError) {
         completionHandler(nil, nil, error)
     }
     
-    public func connection(_: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
+    public func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
         self.response = response
     }
     
-    public func connection(_: NSURLConnection!, didReceiveData data: NSData!) {
+    public func connection(connection: NSURLConnection, didReceiveData data: NSData) {
         responseData.appendData(data)
     }
     
-    public func connectionDidFinishLoading(_: NSURLConnection!) {
+    public func connectionDidFinishLoading(connection: NSURLConnection) {
         completionHandler(response, responseData, nil)
     }
 }
